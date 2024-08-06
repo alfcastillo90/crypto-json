@@ -1,11 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CryptoService } from './crypto.service';
+import { ConfigModule } from '@nestjs/config';
 
 describe('CryptoService', () => {
   let service: CryptoService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule.forRoot({
+        isGlobal: true,
+      })],
       providers: [CryptoService],
     }).compile();
 

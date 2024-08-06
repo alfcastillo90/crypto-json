@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ConfigModule } from '@nestjs/config';
 import { CryptoController } from './crypto.controller';
 import { CryptoService } from './crypto.service';
 
@@ -8,6 +9,9 @@ describe('CryptoController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule.forRoot({
+        isGlobal: true,
+      })],
       controllers: [CryptoController],
       providers: [CryptoService],
     }).compile();
@@ -31,6 +35,7 @@ describe('CryptoController', () => {
     const token = controller.signJson(json);
     const verifiedJson = controller.verifyJson(token);
 
+    // Eliminar la propiedad 'iat' antes de la comparación
     if (verifiedJson && typeof verifiedJson === 'object' && 'iat' in verifiedJson) {
       delete verifiedJson['iat'];
     }
